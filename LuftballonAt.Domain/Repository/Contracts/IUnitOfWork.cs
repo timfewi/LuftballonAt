@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using LuftballonAt.Domain.Repository.Contracts.ProductInterfaces;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,8 @@ namespace LuftballonAt.Domain.Repository.Contracts
     public interface IUnitOfWork
     {
 
-        // Implement Repositories Contracts here 
+        ICategoryRepository Category { get; }
+        IProductRepository Product { get; }
 
         Task SaveAsync();
         Task<IDbContextTransaction> BeginTransactionAsync();

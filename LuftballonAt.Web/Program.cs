@@ -15,6 +15,8 @@ builder.Services.AddControllersWithViews();
 // Add Razor Pages
 builder.Services.AddRazorPages();
 
+// Add Blazor Server
+builder.Services.AddServerSideBlazor();
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -26,14 +28,6 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddAuthentication()
-   .AddGoogle(options =>
-   {
-       IConfigurationSection googleAuthNSection =
-       config.GetSection("Authentication:Google");
-       options.ClientId = googleAuthNSection["ClientId"];
-       options.ClientSecret = googleAuthNSection["ClientSecret"];
-   });
 
 
 
@@ -62,5 +56,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+app.MapBlazorHub();
+
+
 
 app.Run();

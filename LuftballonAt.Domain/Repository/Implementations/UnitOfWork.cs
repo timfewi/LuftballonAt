@@ -1,4 +1,7 @@
 ﻿using LuftballonAt.Domain.Repository.Contracts;
+using LuftballonAt.Domain.Repository.Contracts.ProductInterfaces;
+using LuftballonAt.Domain.Repository.Implementations.ProductRepositories;
+using LuftballonAt.Models;
 using LuftballonAt.Web.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -13,19 +16,22 @@ namespace LuftballonAt.Domain.Repository.Implementations
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _db;
         private IDbContextTransaction _transaction;
+        public ICategoryRepository Category { get; private set; }
+        public IProductRepository Product { get; private set; }
 
 
-        public UnitOfWork(ApplicationDbContext dbContext)
+        public UnitOfWork(ApplicationDbContext db)
         {
-            _dbContext = dbContext;
-            // Implement Repositories here
+            _db = db;
+            Category = new CategoryRepository(_db);
+            Product = new ProductRepository(_db);
         }
 
         public async Task SaveAsync()
         {
-            var entities = _dbContext.ChangeTracker
+            var entities = _db.ChangeTracker
             .Entries()
             .Where(e => e.Entity is BaseModel &&
                   (e.State == EntityState.Added || e.State == EntityState.Modified));
@@ -37,12 +43,12 @@ namespace LuftballonAt.Domain.Repository.Implementations
 
 
 
-            await _dbContext.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
-            _transaction = await _dbContext.Database.BeginTransactionAsync();
+            _transaction = await _db.Database.BeginTransactionAsync();
             return _transaction;
         }
 
