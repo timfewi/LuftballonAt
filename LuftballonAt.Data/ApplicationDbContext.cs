@@ -1,12 +1,13 @@
-﻿using LuftballonAt.Models.Entities.ProductEntities;
+﻿
+
+using LuftballonAt.Models.Entities.ProductEntities;
 using LuftballonAt.Models.Entities.UtilityEntities;
 using LuftballonAt.Web.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
-namespace LuftballonAt.Web.Data
+namespace LuftballonAt.Data
 {
     public class ApplicationDbContext : IdentityDbContext<AppUser, IdentityRole<long>, long>
     {

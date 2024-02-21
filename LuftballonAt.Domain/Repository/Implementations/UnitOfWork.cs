@@ -2,7 +2,7 @@
 using LuftballonAt.Domain.Repository.Contracts.ProductInterfaces;
 using LuftballonAt.Domain.Repository.Implementations.ProductRepositories;
 using LuftballonAt.Models;
-using LuftballonAt.Web.Data;
+using LuftballonAt.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;

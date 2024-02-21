@@ -1,4 +1,5 @@
-﻿using LuftballonAt.Domain.Repository.Contracts;
+﻿using AutoMapper;
+using LuftballonAt.Domain.Repository.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,11 +16,13 @@ namespace LuftballonAt.Domain.Services
         protected readonly ILogger? _logger;
         protected readonly IConfiguration? _configuration;
         protected readonly IUnitOfWork? _unitOfWork;
+        protected readonly IMapper? _mapper;
 
 
         public BaseService(IServiceProvider serviceProvider) : base()
         {
             _serviceProvider = serviceProvider;
+            _mapper = (IMapper?)_serviceProvider.GetService(typeof(IMapper));
             _logger = (ILogger?)_serviceProvider.GetService(typeof(Microsoft.Extensions.Logging.ILogger));
             _configuration = (IConfiguration?)_serviceProvider.GetService(typeof(IConfiguration));
             _unitOfWork = (IUnitOfWork?)_serviceProvider.GetService(typeof(IUnitOfWork));
