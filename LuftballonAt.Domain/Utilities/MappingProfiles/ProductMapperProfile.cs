@@ -12,7 +12,9 @@ namespace LuftballonAt.Domain.Utilities.MappingProfiles
     {
         public ProductMapperProfile()
         {
-            CreateMap<Product, ProductViewDto>().ReverseMap();
+            CreateMap<Product, ProductViewDto>()
+                .ForMember(dto => dto.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : string.Empty))
+                .ReverseMap();
 
         }
     }

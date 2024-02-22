@@ -1,9 +1,12 @@
 
+using AutoMapper;
 using LuftballonAt.Data;
 using LuftballonAt.Domain.Repository.Contracts;
+using LuftballonAt.Domain.Repository.Contracts.ProductInterfaces;
 using LuftballonAt.Domain.Repository.Implementations;
 using LuftballonAt.Domain.Services.Contracts.ProductServiceInterfaces;
 using LuftballonAt.Domain.Services.Implementations.ProductService;
+using LuftballonAt.Domain.Services.Implementations.ProductsService;
 using LuftballonAt.Domain.Utilities.MappingProfiles;
 using LuftballonAt.Web.Areas.Identity.Data;
 using LuftballonAt.Web.Middlewares;
@@ -18,14 +21,16 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
 
+// Add Blazor Server
+builder.Services.AddServerSideBlazor();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 // Add Razor Pages
 builder.Services.AddRazorPages();
 
-// Add Blazor Server
-builder.Services.AddServerSideBlazor();
+
 
 // Add DbContext
 
@@ -52,16 +57,13 @@ builder.Host.UseSerilog();
 
 // Add Auto Mapper
 builder.Services.AddAutoMapper(typeof(ProductMapperProfile));
-
+builder.Services.AddScoped<IMapper, Mapper>();
 // Add Repositories
 builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
 // Add Services
 builder.Services.AddScoped(typeof(IProductService), typeof(ProductService));
-
-
-
-
+builder.Services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
 
 
 
@@ -94,7 +96,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 app.MapBlazorHub();
-
 
 
 app.Run();

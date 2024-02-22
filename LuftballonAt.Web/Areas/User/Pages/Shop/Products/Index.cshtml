@@ -1,0 +1,85 @@
+﻿@page
+@model LuftballonAt.Web.Areas.User.Pages.Shop.Products.IndexModel
+@{
+    ViewData["Title"] = "Shop";
+}
+@{
+}
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Sidebar mit Filteroptionen -->
+            <div class="col-lg-3 mb-3">
+                <!-- Kategorien -->
+                <h5>Kategorien</h5>
+                @foreach (var category in Model.CategoryNames)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="@($"cat-{category.Id}")">
+                        <label class="form-check-label" for="@($"cat-{category.Id}")">@category.CategoryName</label>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-3 mb-3">
+                <h3>Marken</h3>
+                <div class="form-check"><input id="formCheck-5" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-5">Marke 1</label></div>
+                <div class="form-check"><input id="formCheck-6" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-6">Marke 2</label></div>
+                <div class="form-check"><input id="formCheck-7" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-7">Marke 3</label></div>
+            </div>
+            <div class="col-lg-3 mb-3">
+                <h3>Farbe</h3>
+                @* TODO: Farben mit Farbkreis anzeigen und zum Filtern verwenden *@
+                <div class="form-check"><input id="formCheck-8" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-8">Rot</label></div>
+                <div class="form-check"><input id="formCheck-9" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-9">Blau</label></div>
+                <div class="form-check"><input id="formCheck-9" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-9">Grün</label></div>
+                <div class="form-check"><input id="formCheck-9" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-9">Gelb</label></div>
+                <div class="form-check"><input id="formCheck-9" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-9">Rosa</label></div>
+            </div>
+
+        </div>
+
+        <!-- Produktliste -->
+        <div class="col-lg-9">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-sm-12 col-md-6 col-lg-3">
+                        <div class="card h-100 product-card">
+                            <img src="@product.ImageUrl" class="card-image card-img-top img-fluid" style="object-fit: cover;" alt="@product.Name">
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title">@product.Name</h6>
+                                <div class="card-footer">
+                                    <p class="card-text"><span class="text-muted">@product.CategoryName</span></p>
+                                    <div class="row align-items-center">
+                                        <div class="col-7">
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                            }
+                                        </div>
+                                        <div class="col-5 text-end">
+                                            <p class="card-price">@product.Price.ToString("C")</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-auto">
+                                    <div class="button-container">
+                                        <a href="#" class="btn btn-outline-primary btn-sm">In den Warenkorb</a>
+                                        <a href="#" class="btn btn-outline-primary btn-sm">Anzeigen</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+

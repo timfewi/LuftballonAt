@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuftballonAt.Models", "Luft
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuftballonAt.Domain", "LuftballonAt.Domain\LuftballonAt.Domain.csproj", "{126E7028-008E-4BF7-BE29-49959A8D7760}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuftballonAt.Data", "LuftballonAt.Data\LuftballonAt.Data.csproj", "{8BEC774B-2AC8-4F54-A793-115C9677EF47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuftballonAt.Data", "LuftballonAt.Data\LuftballonAt.Data.csproj", "{8BEC774B-2AC8-4F54-A793-115C9677EF47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

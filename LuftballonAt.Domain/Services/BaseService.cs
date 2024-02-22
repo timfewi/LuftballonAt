@@ -23,7 +23,7 @@ namespace LuftballonAt.Domain.Services
         {
             _serviceProvider = serviceProvider;
             _mapper = (IMapper?)_serviceProvider.GetService(typeof(IMapper));
-            _logger = (ILogger?)_serviceProvider.GetService(typeof(Microsoft.Extensions.Logging.ILogger));
+            _logger = (ILogger?)_serviceProvider.GetService(typeof(ILogger));
             _configuration = (IConfiguration?)_serviceProvider.GetService(typeof(IConfiguration));
             _unitOfWork = (IUnitOfWork?)_serviceProvider.GetService(typeof(IUnitOfWork));
 

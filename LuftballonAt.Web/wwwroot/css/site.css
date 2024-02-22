@@ -1,22 +1,84 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+
+.product-card {
+    transition: transform .2s, box-shadow .2s; /* Animation für das Hovering */
+    margin-bottom: 20px; /* Abstand zwischen den Karten */
+    border-radius: 10px; /* Runde Ecken für die Karten */
+}
+
+    .product-card:hover {
+        transform: scale(1.05); /* Vergrößert die Karte beim Drüberhovern */
+        box-shadow: 0 4px 8px rgba(0,0,0,.1); /* Schatten für den Hover-Effekt */
+    }
+
+.card-image {
+    aspect-ratio: 1/1; /* Seitenverhältnis für das Bild */
+}
+
+.card-price {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.card-body {
+    font-size: 0.9rem;
+    padding: 15px; /* Innenabstand für den Karteninhalt */
+}
+
+.card-title {
+    font-size: 1rem;
+}
+
+.card-footer {
+    font-size: 0.8rem;
+    background-color: #f9f9f9; /* Hintergrundfarbe für den Kartenfuß */
+    border-bottom-left-radius: 10px; /* Runde Ecken für den Kartenfuß */
+    border-bottom-right-radius: 10px;
+    padding: 10px; /* Innenabstand für den Kartenfuß */
+}
+
+.btn-sm {
+    width: 100%; /* Stellt die volle Breite innerhalb des Flex-Containers sicher */
+    flex: 1; /* Flex Item */
+    text-align: center; /* Zentriert den Text */
+}
+
+/* Erzeugt einen Container um die Buttons, der als Flexbox fungiert */
+.button-container {
+    display: flex;
+    gap: 0.5rem; /* Abstand zwischen den Buttons */
+}
+
+    .button-container > a {
+        flex-grow: 1; /* Lässt die Buttons die verfügbare Breite ausfüllen */
+        white-space: nowrap; /* Verhindert, dass der Text umbrochen wird */
+        overflow: hidden; /* Versteckt überflüssigen Text */
+        text-overflow: ellipsis; /* Fügt "..." hinzu, wenn der Text überläuft */
+    }
+
+.bi-star-fill {
+    color: #f5d742; /* Goldene Sterne */
+    margin-right: 1px;
 }

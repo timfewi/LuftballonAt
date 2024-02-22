@@ -1,14 +1,26 @@
-﻿@using LuftballonAt.Web.Views.Shared.Components
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 
+<div>
+    <p>ServerPrerendered</p>
+    @await (Html.RenderComponentAsync<Counter>(Microsoft.AspNetCore.Mvc.Rendering.RenderMode.ServerPrerendered))
+</div>
 
 
-<div class="text-center">
+<div>
+    <p>Server</p>
+    @await (Html.RenderComponentAsync<Counter>(Microsoft.AspNetCore.Mvc.Rendering.RenderMode.Server))
+</div>
 
-    @(await Html.RenderComponentAsync<Component>(RenderMode.ServerPrerendered))
 
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <p>Static</p>
+    @await (Html.RenderComponentAsync<Counter>(Microsoft.AspNetCore.Mvc.Rendering.RenderMode.Static))
+</div>
+
+
+<div>
+    <p>WebAssembly</p>
+    @await (Html.RenderComponentAsync<Counter>(Microsoft.AspNetCore.Mvc.Rendering.RenderMode.WebAssemblyPrerendered))
 </div>
