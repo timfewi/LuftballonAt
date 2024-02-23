@@ -5,8 +5,10 @@ using LuftballonAt.Domain.Repository.Contracts;
 using LuftballonAt.Domain.Repository.Contracts.ProductInterfaces;
 using LuftballonAt.Domain.Repository.Implementations;
 using LuftballonAt.Domain.Services.Contracts.ProductServiceInterfaces;
+using LuftballonAt.Domain.Services.Contracts.UtilityServiceInterfaces;
 using LuftballonAt.Domain.Services.Implementations.ProductService;
 using LuftballonAt.Domain.Services.Implementations.ProductsService;
+using LuftballonAt.Domain.Services.Implementations.UtilityServices;
 using LuftballonAt.Domain.Utilities.MappingProfiles;
 using LuftballonAt.Web.Areas.Identity.Data;
 using LuftballonAt.Web.Middlewares;
@@ -55,6 +57,10 @@ var logger = Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 builder.Host.UseSerilog();
 
+// Add HttpClient
+builder.Services.AddHttpClient();
+
+
 // Add Auto Mapper
 builder.Services.AddAutoMapper(typeof(ProductMapperProfile));
 builder.Services.AddScoped<IMapper, Mapper>();
@@ -62,8 +68,14 @@ builder.Services.AddScoped<IMapper, Mapper>();
 builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
 // Add Services
+
+//Product Services
 builder.Services.AddScoped(typeof(IProductService), typeof(ProductService));
 builder.Services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
+builder.Services.AddScoped(typeof(IProductColorService), typeof(ProductColorService));
+
+// Utility Serives
+builder.Services.AddScoped(typeof(IColorAnalysisService), typeof(ColorAnalysisService));
 
 
 

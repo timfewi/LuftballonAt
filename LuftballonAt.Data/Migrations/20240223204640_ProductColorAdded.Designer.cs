@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LuftballonAt.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240221221229_AddDummySeedData")]
-    partial class AddDummySeedData
+    [Migration("20240223204640_ProductColorAdded")]
+    partial class ProductColorAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,7 +62,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7111),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(8952),
                             Description = "Luftballons in verschiedenen Farben und Größen. Perfekt für jede Party oder Feier.",
                             ImageUrl = "https://dummyimage.com/600x400/000/fff&text=Kategorie+1",
                             Name = "Standard"
@@ -70,7 +70,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7171),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(8994),
                             Description = "Romantische und elegante Luftballons, ideal für Hochzeiten, Verlobungen und Jahrestage. Designs umfassen Herzen, Paare und liebevolle Botschaften.",
                             ImageUrl = "https://dummyimage.com/600x400/000/FF5733&text=Kategorie+2",
                             Name = "Liebe & Hochzeit"
@@ -78,7 +78,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7174),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(8996),
                             Description = "Alphabet-Luftballons in verschiedenen Farben und Größen. Perfekt, um Namen, Initialen oder besondere Nachrichten zu kreieren.",
                             ImageUrl = "https://dummyimage.com/600x400/000/DAF7A6&text=Kategorie+3",
                             Name = "Buchstaben"
@@ -86,7 +86,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7177),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(8998),
                             Description = "Zahlen-Luftballons für Geburtstage, Jubiläen oder besondere Jahrestage. Verfügbar in verschiedenen Größen und Farben, um jedes Alter zu feiern.",
                             ImageUrl = "https://dummyimage.com/600x400/000/C70039&text=Kategorie+4",
                             Name = "Zahlen"
@@ -94,7 +94,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 5L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7179),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9000),
                             Description = "Bunte und lebendige Luftballons für jede Party oder Feier. Vielfältige Formen und Farben, geeignet für Themenpartys und festliche Anlässe.",
                             ImageUrl = "https://dummyimage.com/600x400/000/FFC300&text=Kategorie+5",
                             Name = "Party"
@@ -102,7 +102,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 6L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7180),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9002),
                             Description = "Spezielle Geburtstagsluftballons mit Altersangaben, Glückwünschen und lustigen Motiven. Perfekt, um den besonderen Tag zu feiern.",
                             ImageUrl = "https://dummyimage.com/600x400/000/581845&text=Kategorie+6",
                             Name = "Geburtstag"
@@ -110,7 +110,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 7L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7182),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9003),
                             Description = "Sanfte und niedliche Luftballons für Babypartys, Geburten und Taufen. Motive umfassen Babyschuhe, Schnuller und Babytiere.",
                             ImageUrl = "https://dummyimage.com/600x400/000/3498DB&text=Kategorie+7",
                             Name = "Baby"
@@ -118,7 +118,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 8L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7184),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9005),
                             Description = "Luftballons passend zu jeder Jahreszeit – von blühenden Blumen im Frühling bis zu Schneeflocken im Winter. Ideal für saisonale Veranstaltungen und Dekorationen.",
                             ImageUrl = "https://dummyimage.com/600x400/000/2ECC71&text=Kategorie+8",
                             Name = "Jahreszeiten"
@@ -126,7 +126,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 9L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7185),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9007),
                             Description = "Tierluftballons in Form von Haustieren, wilden Tieren und Meerestieren. Spaß für Kinderpartys und Tierliebhaber jeder Altersgruppe.",
                             ImageUrl = "https://dummyimage.com/600x400/000/F1C40F&text=Kategorie+9",
                             Name = "Tiere"
@@ -134,7 +134,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 10L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7187),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9008),
                             Description = "Lebensmittel- und Getränkemotive, von Früchten bis zu Cocktails. Tolle Ergänzung für Themenpartys und kulinarische Events.",
                             ImageUrl = "https://dummyimage.com/600x400/000/E74C3C&text=Kategorie+10",
                             Name = "Essen & Trinken"
@@ -142,7 +142,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 11L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7188),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9010),
                             Description = "Beliebte Charaktere aus Filmen, Fernsehshows und Comics. Ideal für Themenpartys und Fans von spezifischen Genres oder Figuren.",
                             ImageUrl = "https://dummyimage.com/600x400/000/E91E63&text=Kategorie+11",
                             Name = "Charaktere"
@@ -150,7 +150,7 @@ namespace LuftballonAt.Data.Migrations
                         new
                         {
                             Id = 12L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7190),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9012),
                             Description = "Luftballons in Form von Autos, Flugzeugen, Schiffen und mehr. Perfekt für kleine Entdecker und Themenpartys mit Fahrzeugmotiven.",
                             ImageUrl = "https://dummyimage.com/600x400/000/9C27B0&text=Kategorie+12",
                             Name = "Fahrzeuge"
@@ -213,7 +213,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 1L,
                             ArticleNumber = "LB-001",
                             CategoryId = 1L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7295),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9141),
                             Description = "Standard Luftballon in verschiedenen Farben und Größen.",
                             ImageUrl = "https://dummyimage.com/600x400/000/fff&text=Luftballon+1",
                             InStock = true,
@@ -226,7 +226,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 2L,
                             ArticleNumber = "LB-002",
                             CategoryId = 2L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7299),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9147),
                             Description = "Romantischer Herzluftballon in verschiedenen Farben und Größen.",
                             ImageUrl = "https://dummyimage.com/600x400/001f3f/ffffff&text=Luftballon+2",
                             InStock = true,
@@ -239,7 +239,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 3L,
                             ArticleNumber = "LB-003",
                             CategoryId = 3L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7302),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9150),
                             Description = "Alphabet-Luftballon in verschiedenen Farben und Größen.",
                             ImageUrl = "https://dummyimage.com/600x400/0074D9/ffffff&text=Luftballon+3",
                             InStock = true,
@@ -252,7 +252,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 4L,
                             ArticleNumber = "LB-004",
                             CategoryId = 4L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7328),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9153),
                             Description = "Zahlen-Luftballon in verschiedenen Farben und Größen.",
                             ImageUrl = "https://dummyimage.com/600x400/7FDBFF/000000&text=Luftballon+4",
                             InStock = true,
@@ -265,7 +265,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 5L,
                             ArticleNumber = "LB-005",
                             CategoryId = 5L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7331),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9155),
                             Description = "Bunter und lebendiger Luftballon für jede Party oder Feier.",
                             ImageUrl = "https://dummyimage.com/600x400/39CCCC/000000&text=Luftballon+5",
                             InStock = true,
@@ -278,7 +278,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 6L,
                             ArticleNumber = "LB-006",
                             CategoryId = 6L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7333),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9157),
                             Description = "Spezieller Geburtstagsluftballon mit Altersangabe.",
                             ImageUrl = "https://dummyimage.com/600x400/3D9970/ffffff&text=Luftballon+6",
                             InStock = true,
@@ -291,7 +291,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 7L,
                             ArticleNumber = "LB-007",
                             CategoryId = 7L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7335),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9160),
                             Description = "Sanfter und niedlicher Luftballon für Babypartys.",
                             ImageUrl = "https://dummyimage.com/600x400/2ECC40/ffffff&text=Luftballon+7",
                             InStock = true,
@@ -304,7 +304,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 8L,
                             ArticleNumber = "LB-008",
                             CategoryId = 8L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7337),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9163),
                             Description = "Eleganter und stilvoller Luftballon für besondere Anlässe.",
                             ImageUrl = "https://dummyimage.com/600x400/FFDC00/000000&text=Luftballon+8",
                             InStock = true,
@@ -317,7 +317,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 9L,
                             ArticleNumber = "LB-009",
                             CategoryId = 9L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7340),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9165),
                             Description = "Tierformiger Luftballon für tierische Themenpartys.",
                             ImageUrl = "https://dummyimage.com/600x400/FF851B/ffffff&text=Luftballon+9",
                             InStock = true,
@@ -330,7 +330,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 10L,
                             ArticleNumber = "LB-010",
                             CategoryId = 10L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7342),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9167),
                             Description = "Luftballon mit verschiedenen Emoji-Designs.",
                             ImageUrl = "https://dummyimage.com/600x400/FF4136/ffffff&text=Luftballon+10",
                             InStock = true,
@@ -343,7 +343,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 11L,
                             ArticleNumber = "LB-011",
                             CategoryId = 11L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7344),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9170),
                             Description = "Glitzernder Luftballon für glanzvolle Events.",
                             ImageUrl = "https://dummyimage.com/600x400/85144b/ffffff&text=Luftballon+11",
                             InStock = true,
@@ -356,7 +356,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 12L,
                             ArticleNumber = "LB-012",
                             CategoryId = 12L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7346),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9172),
                             Description = "Luftballon mit Sportmotiven für Sportveranstaltungen.",
                             ImageUrl = "https://dummyimage.com/600x400/F012BE/ffffff&text=Luftballon+12",
                             InStock = true,
@@ -369,7 +369,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 13L,
                             ArticleNumber = "LB-013",
                             CategoryId = 1L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7348),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9174),
                             Description = "Luftballon mit Musikinstrumenten-Designs für musikalische Veranstaltungen.",
                             ImageUrl = "https://dummyimage.com/600x400/B10DC9/ffffff&text=Luftballon+13",
                             InStock = true,
@@ -382,7 +382,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 14L,
                             ArticleNumber = "LB-014",
                             CategoryId = 2L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7350),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9176),
                             Description = "Luftballon mit Filmthemen für Filmpremieren und -partys.",
                             ImageUrl = "https://dummyimage.com/600x400/AAAAAA/ffffff&text=Luftballon+14",
                             InStock = true,
@@ -395,7 +395,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 15L,
                             ArticleNumber = "LB-015",
                             CategoryId = 3L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7352),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9178),
                             Description = "Luftballon mit wissenschaftlichen Motiven für Wissenschaftsveranstaltungen.",
                             ImageUrl = "https://dummyimage.com/600x400/111111/ffffff&text=Luftballon+15",
                             InStock = true,
@@ -408,7 +408,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 16L,
                             ArticleNumber = "LB-016",
                             CategoryId = 4L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7354),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9180),
                             Description = "Luftballon mit fantasievollen Designs für Fantasy-Events.",
                             ImageUrl = "https://dummyimage.com/600x400/01FF70/000000&text=Luftballon+16",
                             InStock = true,
@@ -421,7 +421,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 17L,
                             ArticleNumber = "LB-017",
                             CategoryId = 5L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7356),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9183),
                             Description = "Luftballon mit Feiertagsmotiven für festliche Anlässe.",
                             ImageUrl = "https://dummyimage.com/600x400/FFD700/000000&text=Luftballon+17",
                             InStock = true,
@@ -434,7 +434,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 18L,
                             ArticleNumber = "LB-018",
                             CategoryId = 6L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7358),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9185),
                             Description = "Luftballon mit Naturmotiven für Naturliebhaber.",
                             ImageUrl = "https://dummyimage.com/600x400/007FFF/ffffff&text=Luftballon+18",
                             InStock = true,
@@ -447,7 +447,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 19L,
                             ArticleNumber = "LB-019",
                             CategoryId = 7L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7360),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9187),
                             Description = "Luftballon mit Weltraumdesigns für Raumfahrtfans.",
                             ImageUrl = "https://dummyimage.com/600x400/700B97/ffffff&text=Luftballon+19",
                             InStock = true,
@@ -460,7 +460,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 20L,
                             ArticleNumber = "LB-020",
                             CategoryId = 8L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7362),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9189),
                             Description = "Luftballon mit modischen Designs für Fashion-Events.",
                             ImageUrl = "https://dummyimage.com/600x400/0E0B16/ffffff&text=Luftballon+20",
                             InStock = true,
@@ -473,7 +473,7 @@ namespace LuftballonAt.Data.Migrations
                             Id = 21L,
                             ArticleNumber = "LB-021",
                             CategoryId = 9L,
-                            CreatedDate = new DateTime(2024, 2, 21, 23, 12, 28, 532, DateTimeKind.Local).AddTicks(7364),
+                            CreatedDate = new DateTime(2024, 2, 23, 21, 46, 39, 823, DateTimeKind.Local).AddTicks(9191),
                             Description = "Luftballon im Vintage-Stil für Retro-Partys.",
                             ImageUrl = "https://dummyimage.com/600x400/FF0000/ffffff&text=Luftballon+21",
                             InStock = true,
@@ -481,6 +481,39 @@ namespace LuftballonAt.Data.Migrations
                             Price = 21.989999999999998,
                             Stock = 100
                         });
+                });
+
+            modelBuilder.Entity("LuftballonAt.Models.Entities.ProductEntities.ProductColor", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("ColorHex")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<byte[]>("TimeStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductColors");
                 });
 
             modelBuilder.Entity("LuftballonAt.Models.Entities.UtilityEntities.ProductImage", b =>
@@ -744,6 +777,17 @@ namespace LuftballonAt.Data.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("LuftballonAt.Models.Entities.ProductEntities.ProductColor", b =>
+                {
+                    b.HasOne("LuftballonAt.Models.Entities.ProductEntities.Product", "Product")
+                        .WithMany("Colors")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("LuftballonAt.Models.Entities.UtilityEntities.ProductImage", b =>
                 {
                     b.HasOne("LuftballonAt.Models.Entities.ProductEntities.Product", "Product")
@@ -811,6 +855,8 @@ namespace LuftballonAt.Data.Migrations
 
             modelBuilder.Entity("LuftballonAt.Models.Entities.ProductEntities.Product", b =>
                 {
+                    b.Navigation("Colors");
+
                     b.Navigation("Images");
                 });
 #pragma warning restore 612, 618

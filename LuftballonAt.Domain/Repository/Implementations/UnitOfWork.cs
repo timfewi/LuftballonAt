@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LuftballonAt.Domain.Repository.Contracts.ProductRepoInterfaces;
 
 namespace LuftballonAt.Domain.Repository.Implementations
 {
@@ -20,6 +21,7 @@ namespace LuftballonAt.Domain.Repository.Implementations
         private IDbContextTransaction _transaction;
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; private set; }
+        public IProductColorRepository ProductColor { get; private set; }
 
 
         public UnitOfWork(ApplicationDbContext db)
@@ -27,6 +29,7 @@ namespace LuftballonAt.Domain.Repository.Implementations
             _db = db;
             Category = new CategoryRepository(_db);
             Product = new ProductRepository(_db);
+            ProductColor = new ProductColorRepository(_db);
         }
 
         public async Task SaveAsync()

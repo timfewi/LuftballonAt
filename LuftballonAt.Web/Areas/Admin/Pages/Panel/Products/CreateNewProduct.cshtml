@@ -1,0 +1,36 @@
+﻿@page
+@model LuftballonAt.Web.Areas.Admin.Pages.Panel.Products.CreateNewProductModel
+@{
+    ViewData["Title"] = "Neues Produkt erstellen";
+}
+
+<form method="post">
+
+    <div class="form-group">
+        <label for="productName">Produktkategorie</label>
+        <input asp-for="Product.CategoryId" class="form-control" id="productCategory" type="number" placeholder="Gib eine Kategorie des Produkts ein" required>
+    </div>
+    <div class="form-group">
+        <label for="productName">Produktname</label>
+        <input asp-for="Product.Name" class="form-control" id="productName" placeholder="Gib den Namen des Produkts ein" required>
+    </div>
+    <div class="form-group">
+        <label for="productPrice">Preis</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">€</span>
+            </div>
+            <input asp-for="Product.Price" class="form-control" id="productPrice" type="number" step="0.01" placeholder="Gib den Preis des Produkts ein" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="productDescription">Beschreibung</label>
+        <textarea asp-for="Product.Description" class="form-control" id="productDescription" rows="3" placeholder="Gib eine Beschreibung des Produkts ein" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="productImageUrl">Bild-URL des Produkts</label>
+        <input asp-for="Product.ImageUrl" class="form-control" id="productImageUrl" type="url" placeholder="Gib die URL des Produktbilds ein">
+    </div>
+    <!-- Weitere Felder hinzufügen, falls benötigt -->
+    <button type="submit" class="btn btn-primary">Produkt erstellen</button>
+</form>

@@ -82,3 +82,18 @@ body {
     color: #f5d742; /* Goldene Sterne */
     margin-right: 1px;
 }
+
+.search-bar form {
+    width: 100%;
+    max-width: 800px; /* Anpassen für die gewünschte Breite */
+}
+
+.search-bar input[type="search"] {
+    border-radius: 0.25rem 0 0 0.25rem; /* Abgerundete Ecken links */
+}
+
+.search-bar button {
+    border-radius: 0 0.25rem 0.25rem 0; /* Abgerundete Ecken rechts */
+}
+
+w

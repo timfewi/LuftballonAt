@@ -1,5 +1,6 @@
 ﻿using LuftballonAt.Domain.Services.Contracts.ProductServiceInterfaces;
 using LuftballonAt.Models.Dtos.ProductDtos;
+using LuftballonAt.Models.Entities.ProductEntities;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,21 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductService
             var product = await _unitOfWork!.Product.GetAsync(x => x.Id == id, includeProperties: "Category");
             var productDto = _mapper!.Map<ProductViewDto>(product);
             return productDto;
+        }
+
+        public async Task<IEnumerable<Product>> GetAllEntityProductsAsync()
+        {
+            var products = await _unitOfWork!.Product.GetAllAsync();
+            return products;
+        }
+
+        public async Task<long> CreateProductAsync(CreateProductViewDto createProductViewDto)
+        {
+            var product = _mapper!.Map<Product>(createProductViewDto);
+            await _unitOfWork!.Product.AddAsync(product);
+            await _unitOfWork!.SaveAsync();
+
+            return product.Id;
         }
     }
 }

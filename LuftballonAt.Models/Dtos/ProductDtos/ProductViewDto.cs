@@ -17,6 +17,5 @@ namespace LuftballonAt.Models.Dtos.ProductDtos
         public string ImageUrl { get; set; } = string.Empty;
         public string CategoryName { get; set; } = string.Empty;
 
-
     }
 }
