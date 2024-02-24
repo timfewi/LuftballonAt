@@ -96,4 +96,10 @@ body {
     border-radius: 0 0.25rem 0.25rem 0; /* Abgerundete Ecken rechts */
 }
 
-w
+#colorPreview {
+    border: 1px solid #e3e3e3;
+    width: 80px;
+    height: 20px;
+    margin: auto;
+    visibility: hidden;
+}
