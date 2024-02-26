@@ -4,6 +4,7 @@ using LuftballonAt.Domain.Services.Contracts.UtilityServiceInterfaces;
 using LuftballonAt.Models.Entities.ProductEntities;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,16 +54,27 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductsService
 
         public async Task ExtractAndSaveDominantColorForProduct(long productId, string imageUrl)
         {
-            var dominantColor = await _colorAnalysisService.ExtractDominantColor(imageUrl);
-            var productColor = new ProductColor
-            {
-                ProductId = productId,
-                ColorHex = $"#{dominantColor.ToString()}",
-            };
 
-            await _unitOfWork!.ProductColor.AddAsync(productColor);
-            await _unitOfWork.SaveAsync();
+            var existingProductColors = await _unitOfWork!.ProductColor.GetAllAsync();
+            var productColorExists = existingProductColors.Any(pc => pc.ProductId == productId);
+
+
+            if (!productColorExists)
+            {
+                var dominantColor = await _colorAnalysisService.ExtractDominantColor(imageUrl);
+
+                var productColor = new ProductColor
+                {
+                    ProductId = productId,
+                    ColorHex = dominantColor.ToHexString(),
+                };
+
+                // Speichere die neue Farbe in der Datenbank
+                await _unitOfWork.ProductColor.AddAsync(productColor);
+                await _unitOfWork.SaveAsync();
+            }
         }
+
 
 
 
