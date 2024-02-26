@@ -39,7 +39,9 @@ namespace LuftballonAt.Web.Areas.Admin.Pages.Panel.Products
 
                 if (!string.IsNullOrWhiteSpace(Product.ImageUrl))
                 {
-                    await _productColorService.ExtractAndSaveColorsForProduct(createdProductId, Product.ImageUrl);
+                    await _productColorService.ExtractAndSaveColorForProduct(createdProductId, Product.ImageUrl);
+
+
                 }
 
                 return RedirectToPage("Index");

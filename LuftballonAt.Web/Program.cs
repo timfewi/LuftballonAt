@@ -1,5 +1,6 @@
 
 using AutoMapper;
+using Hangfire;
 using LuftballonAt.Data;
 using LuftballonAt.Domain.Repository.Contracts;
 using LuftballonAt.Domain.Repository.Contracts.ProductInterfaces;
@@ -16,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 
@@ -45,6 +47,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 // Add Identity
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+// Add Hangfire services.
+builder.Services.AddHangfire(configuration => configuration
+    .UseSqlServerStorage(config.GetConnectionString("DefaultConnection")));
+builder.Services.AddHangfireServer();
 
 
 
@@ -93,10 +101,21 @@ else
     app.UseHsts();
 }
 
+// Hangfire Konfiguration
+app.UseHangfireDashboard();
+app.UseHangfireServer();
+
+RecurringJob.AddOrUpdate<IProductColorService>(
+    "ExtractColorsForProducts",
+    service => service.ExtractAndSaveColorsForAllProducts(),
+    Cron.Daily);
+
+
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 
 app.UseRouting();
 

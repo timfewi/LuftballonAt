@@ -7,42 +7,62 @@
 }
 
 
-<div class="content">
 
-    <div class="search-bar mb-4">
-        <form class="d-flex justify-content-center">
-            <input class="form-control me-2" type="search" placeholder="Produkt suchen..." aria-label="Suchen" style="max-width: 500px;">
-            <button class="btn btn-outline-success" type="submit">Suchen</button>
-        </form>
-    </div>
+<div class="search-bar mb-4">
+    <form method="post" class="d-flex justify-content-center">
+        <input class="form-control me-2" type="search" placeholder="Produkt suchen..." aria-label="Suchen" style="max-width: 500px;">
+        <button class="btn btn-outline-success" type="submit">Suchen</button>
+    </form>
+</div>
 
-
+<!-- Sidebar mit Filteroptionen -->
+<form method="get">
     <div class="row">
         <div class="col-lg-3">
-            <!-- Sidebar mit Filteroptionen -->
-            <div class="row mb-3">
-                <!-- Kategorien -->
-                <h4>Kategorien</h4>
-                @foreach (var category in Model.CategoryNames)
-                {
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="@($"cat-{category.Id}")">
-                        <label class="form-check-label" for="@($"cat-{category.Id}")">@category.CategoryName</label>
-                    </div>
-                }
-            </div>
-            <div class="row mb-3">
-                <h4>Größe</h4>
-                <div class="form-check"><input id="formCheck-5" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-5">Marke 1</label></div>
-                <div class="form-check"><input id="formCheck-6" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-6">Marke 2</label></div>
-                <div class="form-check"><input id="formCheck-7" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-7">Marke 3</label></div>
-            </div>
-            <div class="row mb-3">
-                @* Oder wenn du Tag Helpers verwendest: *@
-                <partial name="~/Areas/User/Pages/Shop/Shared/Sidebar/_ColorPickerFilter.cshtml" />
+            <button type="submit" class="btn btn-primary mb-3 w-100">Filter anwenden</button>
 
-                @* Verstecktes Feld, um die ausgewählte Farbe zu speichern *@
-                <input type="hidden" id="selectedColor" name="selectedColor" value="" />
+
+            <!-- Farbfilter in einer Card -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    Farbfilter
+                </div>
+                <div class="card-body">
+                    <partial name="~/Areas/User/Pages/Shop/Shared/Sidebar/_ColorPickerFilter.cshtml" />
+                    <input type="hidden" id="selectedColor" name="selectedColor" value="" />
+                </div>
+            </div>
+
+
+            <!-- Kategorien in einer Card -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    Kategorien
+                </div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var category in Model.CategoryNames)
+                    {
+                        <li class="list-group-item">
+                            <div class="form-check">
+                                <!-- Setze den Wert des input-Elements auf die ID der Kategorie -->
+                                <input class="form-check-input" type="checkbox" name="categoryIds" value="@category.Id" id="@($"cat-{category.Id}")">
+                                <label class="form-check-label" for="@($"cat-{category.Id}")">@category.CategoryName</label>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+
+
+            <!-- Preisfilter in einer Card -->
+            <div class="card">
+                <div class="card-header">
+                    Preisfilter
+                </div>
+                <div class="card-body">
+                    <partial name="~/Areas/User/Pages/Shop/Shared/Sidebar/_PriceFilter.cshtml" />
+                </div>
             </div>
         </div>
 
@@ -50,12 +70,13 @@
         <div class="col-lg-9">
             <partial name="~/Areas/User/Pages/Shop/Shared/_ProductsList.cshtml" model="Model" />
         </div>
-
-
-
     </div>
-</div>
+
+</form>
+
+
 
 @section Scripts {
     <script src="~/js/colorPicker.js"></script>
+    <script src="~/js/pricePicker.js"></script>
 }

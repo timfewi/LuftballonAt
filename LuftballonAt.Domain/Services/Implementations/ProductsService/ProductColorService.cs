@@ -1,4 +1,5 @@
-﻿using LuftballonAt.Domain.Services.Contracts.ProductServiceInterfaces;
+﻿using ImageMagick;
+using LuftballonAt.Domain.Services.Contracts.ProductServiceInterfaces;
 using LuftballonAt.Domain.Services.Contracts.UtilityServiceInterfaces;
 using LuftballonAt.Models.Entities.ProductEntities;
 using System;
@@ -23,20 +24,17 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductsService
             _productService = productService;
         }
 
-        public async Task ExtractAndSaveColorsForProduct(long productId, string imageUrl)
+        public async Task ExtractAndSaveColorForProduct(long productId, string imageUrl)
         {
-            var colors = await _colorAnalysisService.ExtractDominantColors(imageUrl);
+            var color = await _colorAnalysisService.ExtractDominantColor(imageUrl);
 
-            foreach (var color in colors)
+            var productColor = new ProductColor
             {
-                var productColor = new ProductColor
-                {
-                    ProductId = productId,
-                    ColorHex = color.ToHexString(),
-                };
+                ProductId = productId,
+                ColorHex = color.ToHexString(),
+            };
 
-                await _unitOfWork!.ProductColor.AddAsync(productColor);
-            }
+            await _unitOfWork!.ProductColor.AddAsync(productColor);
             await _unitOfWork!.SaveAsync();
         }
 
@@ -49,9 +47,24 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductsService
                 if (product.Colors.Any())
                     continue;
 
-                await ExtractAndSaveColorsForProduct(product.Id, product.ImageUrl!);
+                await ExtractAndSaveDominantColorForProduct(product.Id, product.ImageUrl!);
             }
         }
+
+        public async Task ExtractAndSaveDominantColorForProduct(long productId, string imageUrl)
+        {
+            var dominantColor = await _colorAnalysisService.ExtractDominantColor(imageUrl);
+            var productColor = new ProductColor
+            {
+                ProductId = productId,
+                ColorHex = $"#{dominantColor.ToString()}",
+            };
+
+            await _unitOfWork!.ProductColor.AddAsync(productColor);
+            await _unitOfWork.SaveAsync();
+        }
+
+
 
 
     }
