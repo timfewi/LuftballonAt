@@ -16,6 +16,8 @@ namespace LuftballonAt.Domain.Services.Contracts.ProductServiceInterfaces
         Task<long> CreateProductAsync(CreateProductViewDto createProductViewDto);
         Task<IEnumerable<ProductViewDto>> GetFilteredProductsAsync(List<long> categoryIds, string? selectedColorHex, double? minPrice, double? maxPrice);
         Task<IEnumerable<ProductViewDto>> GetSearchedProductsAsync(string? search);
+        Task<IEnumerable<SimilarProductsDto>> GetSimilarProductsByCategoryAsync(long productId);
+
 
     }
 }

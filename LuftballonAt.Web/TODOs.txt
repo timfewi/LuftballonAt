@@ -1,9 +1,3 @@
 ﻿
-ProductColorService => Weiß als Dominate farbe ausblenden weil jedes Produkt weißen Hintergrund hat
 
-Filter nach Kategorie, Preis, Farbe, Größe, etc.
-
-Suche mit AJAX call dynamisch nach Einträgen in einer Datenbank laden 
-und anzeigen
-
-
+AddToCart fixxen

@@ -12,6 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LuftballonAt.Domain.Repository.Contracts.ProductRepoInterfaces;
+using LuftballonAt.Domain.Repository.Contracts.AppUserRepositories;
+using LuftballonAt.Domain.Repository.Implementations.AppUserRepositories;
 
 namespace LuftballonAt.Domain.Repository.Implementations
 {
@@ -22,6 +24,8 @@ namespace LuftballonAt.Domain.Repository.Implementations
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; private set; }
         public IProductColorRepository ProductColor { get; private set; }
+        public IShoppingCartRepository ShoppingCart { get; private set; }
+        public IAppUserRepository AppUser { get; private set; }
 
 
         public UnitOfWork(ApplicationDbContext db)
@@ -30,6 +34,8 @@ namespace LuftballonAt.Domain.Repository.Implementations
             Category = new CategoryRepository(_db);
             Product = new ProductRepository(_db);
             ProductColor = new ProductColorRepository(_db);
+            ShoppingCart = new ShoppingCartRepository(_db);
+            AppUser = new AppUserRepository(_db);
         }
 
         public async Task SaveAsync()

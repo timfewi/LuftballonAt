@@ -54,7 +54,7 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductService
         public async Task<IEnumerable<ProductViewDto>> GetFilteredProductsAsync(List<long> categoryIds, string? selectedColorHex, double? minPrice, double? maxPrice)
         {
             // Verwende das Product-Repository aus dem UnitOfWork
-            var query = _unitOfWork.Product.GetAll(includeProperties: "Category,Colors");
+            var query = _unitOfWork!.Product.GetAll(includeProperties: "Category,Colors");
 
             // Filtere nach Kategorie-IDs
             if (categoryIds.Any())
@@ -62,7 +62,7 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductService
                 query = query.Where(p => categoryIds.Contains(p.CategoryId));
             }
 
-            double threshold = 150; // Schwellenwert für die Farbähnlichkeit
+            double threshold = 110; // Schwellenwert für die Farbähnlichkeit
 
             // Filtere nach ähnlicher Farbe
             if (!string.IsNullOrWhiteSpace(selectedColorHex))
@@ -99,11 +99,58 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductService
             return products;
         }
 
-
-
-        public Task<IEnumerable<ProductViewDto>> GetSearchedProductsAsync(string? search)
+        public async Task<IEnumerable<ProductViewDto>> GetSearchedProductsAsync(string? searchTerm)
         {
-            throw new NotImplementedException();
+            var query = _unitOfWork!.Product.GetAll(includeProperties: "Category,Colors");
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                query = query.Where(i =>
+                   (i.Name is not null && i.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+                   (i.Description != null && i.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+                   (i.Category!.Name != null && i.Category.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                   );
+            }
+
+            var productViewDto = query.Select(p => new ProductViewDto
+            {
+                Id = p.Id,
+                Name = p.Name!,
+                Description = p.Description!,
+                Price = p.Price,
+                ArticleNumber = p.ArticleNumber!,
+                InStock = p.InStock,
+                ImageUrl = p.ImageUrl!,
+                CategoryName = p.Category?.Name ?? string.Empty
+            }).ToList();
+
+            return productViewDto;
         }
+
+        public async Task<IEnumerable<SimilarProductsDto>> GetSimilarProductsByCategoryAsync(long productId)
+        {
+            var product = await _unitOfWork!.Product.GetAsync(x => x.Id == productId, includeProperties: "Category");
+            var categoryId = product.CategoryId;
+
+
+            var similarProducts = await _unitOfWork!.Product.GetAllAsync(p => p.CategoryId == categoryId && p.Id != productId, includeProperties: "Category");
+            List<Product> productList = similarProducts.ToList();
+            if (!productList.Any())
+            {
+                productList = (await _unitOfWork!.Product.GetAllAsync(p => p.Id != productId)).ToList();
+                productList = productList.OrderBy(r => Guid.NewGuid()).Take(4).ToList();
+            }
+
+            var similarProductsDto = _mapper!.Map<IEnumerable<SimilarProductsDto>>(productList);
+            return similarProductsDto;
+        }
+
+
+
+
+
+
+
+
+
     }
 }

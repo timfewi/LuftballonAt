@@ -71,7 +71,10 @@ builder.Services.AddHttpClient();
 
 // Add Auto Mapper
 builder.Services.AddAutoMapper(typeof(ProductMapperProfile));
+builder.Services.AddAutoMapper(typeof(CategoryMapperProfile));
+builder.Services.AddAutoMapper(typeof(ShoppingCartItemMapperProfile));
 builder.Services.AddScoped<IMapper, Mapper>();
+
 // Add Repositories
 builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
@@ -81,6 +84,7 @@ builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 builder.Services.AddScoped(typeof(IProductService), typeof(ProductService));
 builder.Services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
 builder.Services.AddScoped(typeof(IProductColorService), typeof(ProductColorService));
+builder.Services.AddScoped(typeof(IShoppingCartService), typeof(ShoppingCartService));
 
 // Utility Serives
 builder.Services.AddScoped(typeof(IColorAnalysisService), typeof(ColorAnalysisService));

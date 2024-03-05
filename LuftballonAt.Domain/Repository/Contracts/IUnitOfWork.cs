@@ -1,4 +1,5 @@
-﻿using LuftballonAt.Domain.Repository.Contracts.ProductInterfaces;
+﻿using LuftballonAt.Domain.Repository.Contracts.AppUserRepositories;
+using LuftballonAt.Domain.Repository.Contracts.ProductInterfaces;
 using LuftballonAt.Domain.Repository.Contracts.ProductRepoInterfaces;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -15,6 +16,8 @@ namespace LuftballonAt.Domain.Repository.Contracts
         ICategoryRepository Category { get; }
         IProductRepository Product { get; }
         IProductColorRepository ProductColor { get; }
+        IShoppingCartRepository ShoppingCart { get; }
+        IAppUserRepository AppUser { get; }
 
         Task SaveAsync();
         Task<IDbContextTransaction> BeginTransactionAsync();

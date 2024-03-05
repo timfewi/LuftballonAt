@@ -19,6 +19,8 @@ namespace LuftballonAt.Domain.Utilities.MappingProfiles
             CreateMap<CreateProductViewDto, Product>()
                 .ForMember(product => product.CategoryId, opt => opt.MapFrom(dto => dto.CategoryId))
                 .ReverseMap();
+
+            CreateMap<Product, SimilarProductsDto>().ReverseMap();
         }
     }
 }

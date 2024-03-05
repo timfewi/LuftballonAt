@@ -4,6 +4,7 @@ using LuftballonAt.Models.Dtos.CategoryDtos;
 using LuftballonAt.Models.Dtos.ProductDtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace LuftballonAt.Web.Areas.User.Pages.Shop.Products
 {
@@ -11,7 +12,7 @@ namespace LuftballonAt.Web.Areas.User.Pages.Shop.Products
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-        private readonly IProductColorService _productColorService;
+
 
         // Daten für die View als Properties
         public IEnumerable<ProductViewDto> Products { get; private set; }
@@ -34,10 +35,12 @@ namespace LuftballonAt.Web.Areas.User.Pages.Shop.Products
         public double? MaxPrice { get; set; }
 
 
+
         public IndexModel(IProductService productService, ICategoryService categoryService)
         {
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
             _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
+
         }
 
         public async Task OnGetAsync()
@@ -45,13 +48,17 @@ namespace LuftballonAt.Web.Areas.User.Pages.Shop.Products
             Products = await _productService.GetAllProductsAsync();
             CategoryNames = await _categoryService.GetAllCategoryNamesAsync();
 
-
-
-
-            // Verwende die BindProperty-Werte hier, um die Produktsuche zu filtern
-            Products = await _productService.GetFilteredProductsAsync(CategoryIds, SelectedColor, MinPrice, MaxPrice);
-
+            if (!string.IsNullOrEmpty(SearchTerm))
+            {
+                Products = await _productService.GetSearchedProductsAsync(SearchTerm);
+            }
+            else
+            {
+                Products = await _productService.GetFilteredProductsAsync(CategoryIds, SelectedColor, MinPrice, MaxPrice);
+            }
         }
+
+
     }
 
 }

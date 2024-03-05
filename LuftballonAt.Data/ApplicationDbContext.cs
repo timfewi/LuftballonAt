@@ -25,6 +25,8 @@ namespace LuftballonAt.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductColor> ProductColors { get; set; }
 
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
 
         // Utility Entities
         public DbSet<ProductImage> Images { get; set; }

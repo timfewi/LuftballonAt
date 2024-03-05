@@ -1,0 +1,48 @@
+﻿@page
+@model LuftballonAt.Web.Areas.User.Pages.Shop.Cart.SummaryModel
+
+@{
+    ViewData["Title"] = "Warenkorb Zusammenfassung";
+}
+@*
+<div class="container mt-5">
+    <h2 class="mb-4">Warenkorb Zusammenfassung</h2>
+    @if (Model.ShoppingCartItems.Any())
+    {
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Produkt</th>
+                        <th>Preis pro Einheit</th>
+                        <th>Menge</th>
+                        <th>Gesamtpreis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ShoppingCartItems)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@item.PricePerUnit.ToString("C")</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.TotalPrice.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="text-right">
+            <h4>Total: @Model.ShoppingCartItems.Sum(item => item.TotalPrice).ToString("C")</h4>
+        </div>
+    }
+    else
+    {
+        <p>Ihr Warenkorb ist leer.</p>
+    }
+</div>
+
+ *@
+@section Scripts {
+    <script src="~/js/shoppingCart.js"></script>
+}

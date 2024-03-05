@@ -1,0 +1,93 @@
+﻿@page
+@model LuftballonAt.Web.Areas.User.Pages.Shop.Products.DetailsModel
+@{
+    ViewData["Title"] = "Produktdetails";
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const amountInput = document.getElementById("amount");
+            const totalPriceDisplay = document.getElementById("totalPrice");
+            const pricePerUnit = @Model.Product.Price;
+
+            function updateTotalPrice() {
+                const amount = parseInt(amountInput.value) || 0;
+                const totalPrice = pricePerUnit * amount;
+                totalPriceDisplay.innerText = `Gesamtpreis: ${totalPrice.toFixed(2)} €`;
+            }
+
+            amountInput.addEventListener("change", updateTotalPrice);
+            updateTotalPrice(); // Initial update
+        });
+    </script>
+}
+
+<div class="container mt-4">
+    <div class="row">
+
+        <!-- Produkt Bild -->
+        <div class="col-md-6">
+            <img src="@Model.Product.ImageUrl" class="img-fluid" alt="@Model.Product.Name">
+        </div>
+
+        <!-- Produktinformationen -->
+        <div class="col-md-6">
+            <h2 class="mb-3">@Model.Product.Name</h2>
+            <h5 class="text-muted mb-3">Kategorie: @Model.Product.CategoryName</h5>
+            <div class="row align-items-baseline mb-3">
+                <div class="col-auto pe-0">
+                    <h4 class="text-primary mb-0">@Model.Product.Price €</h4>
+                </div>
+                <div class="col-auto ps-0">
+                    <small class="text-black-50">/pro Stück</small>
+                </div>
+                <div class="col-auto ps-2">
+                    <small class="text-black-50">inkl. MwSt</small>
+                </div>
+            </div>
+            <p class="mb-3">@Model.Product.Description</p>
+            <!-- Verfügbarkeit -->
+            @if (Model.Product.InStock)
+            {
+                <p class="text-success mb-3">Auf Lager</p>
+            }
+            else
+            {
+                <p class="text-danger mb-3">Nicht auf Lager</p>
+            }
+            <!-- Menge und Kaufen -->
+            <div class="d-flex gap-2 align-items-center mb-3">
+                <input type="number" id="amount" class="form-control w-auto" value="1" min="1">
+                <button class="btn btn-primary">In den Warenkorb</button>
+            </div>
+            <!-- Dynamischer Gesamtpreis -->
+            <p id="totalPrice" class="mb-3"></p>
+            <!-- Bewertungen -->
+            <div class="mt-4">
+                <h5>Bewertungen</h5>
+                <!-- Bewertungssterne und Kommentare einfügen -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Produktinformationen in Tabs -->
+    <partial name="~/Areas/User/Pages/Shop/Shared/_ProductInfos.cshtml" />
+
+
+    <!-- Product FAQs -->
+    <partial name="~/Areas/User/Pages/Shop/Shared/FAQs/_ProductFAQ.cshtml" />
+
+</div>
+
+
+<!-- Ähnliche Produkte -->
+<div class="row mt-4">
+    <h5>Ähnliche Produkte</h5>
+    <!-- Karten oder eine Liste für ähnliche Produkte -->
+    <div class="col-12">
+        <partial name="~/Areas/User/Pages/Shop/Shared/_SimilarProducts.cshtml" model="Model.SimilarProducts" />
+
+    </div>
+</div>
+
