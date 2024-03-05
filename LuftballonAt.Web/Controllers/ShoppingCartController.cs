@@ -1,11 +1,9 @@
 ﻿using LuftballonAt.Domain.Services.Contracts.ProductServiceInterfaces;
 using LuftballonAt.Models.Dtos.ShoppingCartDtos;
-using LuftballonAt.Web.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
+using LuftballonAt.Web.Areas.Identity.Data;
 
 namespace LuftballonAt.Web.Controllers
 {
@@ -22,95 +20,119 @@ namespace LuftballonAt.Web.Controllers
             _userManager = userManager;
         }
 
-        [HttpPost("AddItem")]
-        public async Task<IActionResult> AddItemToCart([FromBody] ShoppingCartItemAddDto itemDto)
-        {
-            var userId = User.Identity!.IsAuthenticated ? long.Parse(_userManager.GetUserId(User)!) : (long?)null;
-            var token = !User.Identity.IsAuthenticated ? itemDto.CartToken : null;
 
-            if (itemDto.ProductId == 0 || itemDto.Quantity <= 0)
+        [HttpPost("AddItem")]
+        public async Task<IActionResult> AddItemToCart([FromBody] ShoppingCartItemDto itemDto)
+        {
+            if (itemDto == null || itemDto.ProductId == null || itemDto.Quantity <= 0)
             {
-                return BadRequest("Invalid product ID or quantity.");
+                return BadRequest("Invalid item data.");
             }
 
-            await _shoppingCartService.AddToCartAsync(itemDto.ProductId, userId, itemDto.Quantity, token);
+
+            var cartToken = Request.Cookies["CartToken"];
+            if (string.IsNullOrEmpty(itemDto.CartToken))
+            {
+                cartToken = GenerateCartToken();
+                SetCartTokenCookie(cartToken);
+            }
+            else
+            {
+                cartToken = itemDto.CartToken;
+            }
+
+            var appUserId = User.Identity!.IsAuthenticated ? long.Parse(_userManager.GetUserId(User)!) : itemDto.AppUserId;
+
+            await _shoppingCartService.AddToCartAsync(itemDto.ProductId.Value, appUserId, itemDto.Quantity, cartToken);
+            return Ok(new { Message = "Item added successfully.", CartToken = cartToken });
+
+        }
+
+
+        [HttpPost("UpdateQuantity")]
+        public async Task<IActionResult> UpdateQuantity([FromBody] ShoppingCartItemDto itemDto)
+        {
+            if (itemDto.ProductId == null || itemDto.Quantity <= 0)
+            {
+                return BadRequest("Invalid request.");
+            }
+
+            var cartToken = Request.Cookies["CartToken"];
+            await _shoppingCartService.UpdateCartItemQuantityAsync(itemDto.ProductId.Value, itemDto.Quantity, cartToken);
+
 
             return Ok();
         }
 
-        [HttpPost("UpdateQuantity")]
-        public async Task<IActionResult> UpdateQuantity([FromBody] ShoppingCartUpdateQuantityDto updateDto)
-        {
-            try
-            {
-                await _shoppingCartService.UpdateCartItemQuantityAsync(updateDto.CartItemId, updateDto.NewQuantity);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpPost("RemoveItem")]
-        public async Task<IActionResult> RemoveCartItem([FromBody] ShoppingCartRemoveItemDto dto)
+        public async Task<IActionResult> RemoveCartItem([FromBody] ShoppingCartItemDto itemDto, int amount)
         {
-            try
+            if (itemDto.ProductId == null)
             {
-                long? userId = User.Identity!.IsAuthenticated ? long.Parse(_userManager.GetUserId(User)!) : null;
-                await _shoppingCartService.RemoveFromCartAsync(dto.ProductId, userId, dto.CartToken);
-                return Ok(new { Message = "Item removed successfully." });
+                return BadRequest("Invalid request.");
             }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { Message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = ex.Message });
-            }
+
+            var cartToken = Request.Cookies["CartToken"];
+            await _shoppingCartService.RemoveFromCartAsync(itemDto.ProductId.Value, amount, cartToken);
+
+            return Ok(new { Message = "Item removed successfully." });
         }
 
         [HttpPost("ClearCart")]
-        public async Task<IActionResult> ClearCart([FromBody] string cartToken)
+        public async Task<IActionResult> ClearCart()
         {
-            try
+            string cartToken = Request.Cookies["CartToken"]!;
+            long? userId = User.Identity!.IsAuthenticated ? long.Parse(_userManager.GetUserId(User)!) : null;
+
+            if (string.IsNullOrEmpty(cartToken) && !userId.HasValue)
             {
-                var userId = User.Identity!.IsAuthenticated ? long.Parse(_userManager.GetUserId(User)!) : (long?)null;
-                await _shoppingCartService.ClearUserCart(userId, cartToken);
-                return Ok(new { Message = "Cart cleared successfully." });
+                return BadRequest("No cart token or user ID available to clear cart.");
             }
-            catch (Exception ex)
+
+            await _shoppingCartService.ClearCartAsync(userId, cartToken);
+
+            if (!userId.HasValue)
             {
-                return BadRequest(new { Message = ex.Message });
+                Response.Cookies.Delete("CartToken");
             }
+
+            return Ok(new { Message = "Cart cleared successfully." });
         }
 
         [HttpGet("GetCartItemCount")]
-        public async Task<IActionResult> GetCartItemCount([FromQuery] string cartToken)
+        public async Task<IActionResult> GetCartItemCount()
         {
+            string cartToken = Request.Cookies["CartToken"]!;
             long? userId = User.Identity!.IsAuthenticated ? long.Parse(_userManager.GetUserId(User)!) : null;
-            var count = await _shoppingCartService.GetCartCount(userId, cartToken);
+
+            if (string.IsNullOrEmpty(cartToken) && !userId.HasValue)
+            {
+                return BadRequest("No cart token or user ID available to get item count.");
+            }
+
+            var count = await _shoppingCartService.GetCartCountAsync(userId, cartToken);
+
             return Ok(new { Count = count });
         }
 
 
-        [HttpGet("GetCartTotal")]
-        public async Task<IActionResult> GetCartTotal([FromQuery] string cartToken)
+        private string GenerateCartToken()
         {
-            long? userId = User.Identity!.IsAuthenticated ? long.Parse(_userManager.GetUserId(User)!) : null;
-            var total = await _shoppingCartService.GetCartTotal(userId, cartToken);
-            return Ok(new { Total = total });
+            return Guid.NewGuid().ToString();
         }
 
-        [HttpGet("GetProductsFromShoppingList")]
-        public async Task<IActionResult> GetProductsFromShoppingList([FromQuery] string cartToken)
+        private void SetCartTokenCookie(string cartToken)
         {
-            long? userId = User.Identity!.IsAuthenticated ? long.Parse(_userManager.GetUserId(User)!) : null;
-            var products = await _shoppingCartService.GetProductsFromShoppingList(userId, cartToken);
-            return Ok(products);
-        }
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddDays(7)
+            };
 
+            Response.Cookies.Append("CartToken", cartToken, cookieOptions);
+        }
 
 
     }

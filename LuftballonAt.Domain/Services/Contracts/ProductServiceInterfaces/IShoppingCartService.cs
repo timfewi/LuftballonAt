@@ -1,6 +1,4 @@
-﻿
-using LuftballonAt.Models.Dtos.ShoppingCartDtos;
-using LuftballonAt.Models.Entities.ProductEntities;
+﻿using LuftballonAt.Models.Entities.ProductEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +9,13 @@ namespace LuftballonAt.Domain.Services.Contracts.ProductServiceInterfaces
 {
     public interface IShoppingCartService
     {
-
-        Task<ShoppingCart> GetAllAsync(long? productId, long? appUserId);
-        Task AddToCartAsync(long productId, long? appUserId, int quantity, string? token);
-        Task UpdateCartItemQuantityAsync(long cartItemId, int newQuantity);
-        Task RemoveFromCartAsync(long productId, long? userId, string? token);
-        Task ClearUserCart(long? userId, string? token);
-        Task<int> GetCartCount(long? userId, string? token);
-        Task<double> GetCartTotal(long? userId, string? token);
-        Task<IEnumerable<Product>> GetProductsFromShoppingList(long? userId, string? token);
+        Task<IEnumerable<ShoppingCart>> GetAllForUserAsync(long? appUserId);
+        Task<IEnumerable<ShoppingCart>> GetAllShoppingCartItemsForTokenUserAsync(string cartToken);
+        Task AddToCartAsync(long productId, long? appUserId, int quantity, string? cartToken);
+        Task UpdateCartItemQuantityAsync(long cartItemId, int newQuantity, string cartToken);
+        Task RemoveFromCartAsync(long cartItemId, int amount, string cartToken);
+        Task ClearCartAsync(long? appUserId, string? cartToken);
+        Task<int> GetCartCountAsync(long? appUserId, string? cartToken);
+        Task<double> GetCartTotalAsync(long? appUserId, string? cartToken);
     }
 }
-

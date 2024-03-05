@@ -15,7 +15,7 @@ namespace LuftballonAt.Domain.Utilities.MappingProfiles
         public ShoppingCartItemMapperProfile()
         {
             CreateMap<ShoppingCart, ShoppingCartItemDto>().ReverseMap();
-            CreateMap<ShoppingCart, ShoppingCartItemAddDto>().ReverseMap();
+
         }
     }
 }

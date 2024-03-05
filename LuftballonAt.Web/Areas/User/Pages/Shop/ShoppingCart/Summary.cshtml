@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Warenkorb Zusammenfassung";
 }
-@*
+
 <div class="container mt-5">
     <h2 class="mb-4">Warenkorb Zusammenfassung</h2>
     @if (Model.ShoppingCartItems.Any())
@@ -13,6 +13,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th>Produktbild</th>
                         <th>Produkt</th>
                         <th>Preis pro Einheit</th>
                         <th>Menge</th>
@@ -23,6 +24,9 @@
                     @foreach (var item in Model.ShoppingCartItems)
                     {
                         <tr>
+                            <td>
+                                <img src="@item.ProductImageUrl" class="img-fluid" alt="Bild von @item.ProductName">
+                            </td>
                             <td>@item.ProductName</td>
                             <td>@item.PricePerUnit.ToString("C")</td>
                             <td>@item.Quantity</td>
@@ -41,8 +45,3 @@
         <p>Ihr Warenkorb ist leer.</p>
     }
 </div>
-
- *@
-@section Scripts {
-    <script src="~/js/shoppingCart.js"></script>
-}

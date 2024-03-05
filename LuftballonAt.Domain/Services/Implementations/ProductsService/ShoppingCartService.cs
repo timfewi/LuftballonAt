@@ -1,12 +1,10 @@
 ﻿using LuftballonAt.Domain.Services.Contracts.ProductServiceInterfaces;
-using LuftballonAt.Models.Dtos.ShoppingCartDtos;
 using LuftballonAt.Models.Entities.ProductEntities;
+using LuftballonAt.Web.Areas.Identity.Data;
 using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LuftballonAt.Domain.Services.Implementations.ProductsService
@@ -17,33 +15,33 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductsService
         {
         }
 
-        public async Task<ShoppingCart> GetAllAsync(long? productId, long? appUserId)
+        public async Task<IEnumerable<ShoppingCart>> GetAllForUserAsync(long? appUserId)
         {
-            try
-            {
-                if (productId == null || appUserId == null)
-                    return null!;
-
-                var existingCartItem = await _unitOfWork.ShoppingCart.GetAsync(x => x.ProductId == productId && x.AppUserId == appUserId);
-                return existingCartItem!;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error in ShoppingCartService.GetAllAsync");
-                throw;
-            }
+            var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(
+                filter: sc => sc.AppUserId == appUserId,
+                includeProperties: "Product");
+            return cartItems;
         }
 
-        public async Task AddToCartAsync(long productId, long? appUserId, int quantity, string? token)
+        public async Task<IEnumerable<ShoppingCart>> GetAllShoppingCartItemsForTokenUserAsync(string cartToken)
+        {
+            var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(
+                filter: sc => sc.CartToken == cartToken,
+                includeProperties: "Product");
+            return cartItems;
+        }
+
+
+        public async Task AddToCartAsync(long productId, long? appUserId, int quantity, string? cartToken)
         {
             ShoppingCart? existingCartItem = null;
             if (appUserId.HasValue)
             {
                 existingCartItem = await _unitOfWork.ShoppingCart.GetAsync(x => x.ProductId == productId && x.AppUserId == appUserId.Value);
             }
-            else if (!string.IsNullOrEmpty(token))
+            else if (!string.IsNullOrEmpty(cartToken))
             {
-                existingCartItem = await _unitOfWork.ShoppingCart.GetAsync(x => x.ProductId == productId && x.CartToken == token);
+                existingCartItem = await _unitOfWork.ShoppingCart.GetAsync(x => x.ProductId == productId && x.CartToken == cartToken);
             }
 
             if (existingCartItem != null)
@@ -57,7 +55,7 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductsService
                 {
                     ProductId = productId,
                     AppUserId = appUserId,
-                    CartToken = token,
+                    CartToken = cartToken,
                     Quantity = quantity
                 };
                 await _unitOfWork.ShoppingCart.AddAsync(cartItem);
@@ -65,10 +63,18 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductsService
             await _unitOfWork.SaveAsync();
         }
 
-
-        public async Task UpdateCartItemQuantityAsync(long cartItemId, int newQuantity)
+        public async Task UpdateCartItemQuantityAsync(long cartItemId, int newQuantity, string? cartToken)
         {
-            var cartItem = await _unitOfWork.ShoppingCart.GetAsync(ci => ci.Id == cartItemId);
+            ShoppingCart cartItem;
+            if (!string.IsNullOrEmpty(cartToken))
+            {
+                cartItem = await _unitOfWork.ShoppingCart.GetAsync(ci => ci.Id == cartItemId && ci.CartToken == cartToken);
+            }
+            else
+            {
+                cartItem = await _unitOfWork.ShoppingCart.GetAsync(ci => ci.Id == cartItemId);
+            }
+
             if (cartItem == null)
             {
                 throw new KeyNotFoundException("Warenkorbartikel nicht gefunden.");
@@ -79,59 +85,64 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductsService
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task RemoveFromCartAsync(long productId, long? userId, string? token)
+        public async Task RemoveFromCartAsync(long cartItemId, int amount, string? cartToken)
         {
-            ShoppingCart? cartItem;
-            if (userId.HasValue)
+            ShoppingCart cartItem;
+            if (!string.IsNullOrEmpty(cartToken))
             {
-                cartItem = await _unitOfWork.ShoppingCart.GetAsync(ci => ci.ProductId == productId && ci.AppUserId == userId.Value);
+                cartItem = await _unitOfWork.ShoppingCart.GetAsync(ci => ci.Id == cartItemId && ci.CartToken == cartToken);
             }
             else
             {
-                cartItem = await _unitOfWork.ShoppingCart.GetAsync(ci => ci.ProductId == productId && ci.CartToken == token);
+                cartItem = await _unitOfWork.ShoppingCart.GetAsync(ci => ci.Id == cartItemId);
             }
 
-            if (cartItem != null)
-            {
-                _unitOfWork.ShoppingCart.Remove(cartItem);
-                await _unitOfWork.SaveAsync();
-            }
-            else
+            if (cartItem == null)
             {
                 throw new KeyNotFoundException("Warenkorbartikel nicht gefunden.");
             }
-        }
 
-        public async Task ClearUserCart(long? userId, string? token)
-        {
-            if (userId.HasValue)
+            cartItem.Quantity -= amount;
+            if (cartItem.Quantity <= 0)
             {
-                var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(ci => ci.AppUserId == userId.Value);
-                _unitOfWork.ShoppingCart.RemoveRange(cartItems);
-            }
-            else if (!string.IsNullOrEmpty(token))
-            {
-                var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(ci => ci.CartToken == token);
-                _unitOfWork.ShoppingCart.RemoveRange(cartItems);
+                _unitOfWork.ShoppingCart.Remove(cartItem);
             }
             else
             {
-                throw new ArgumentException("Ein Benutzer-ID oder Token ist erforderlich, um den Warenkorb zu löschen.");
+                await _unitOfWork.ShoppingCart.UpdateAsync(cartItem);
             }
-
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task<int> GetCartCount(long? userId, string? token)
+
+
+        public async Task ClearCartAsync(long? appUserId, string? cartToken)
         {
-            if (userId.HasValue)
+            if (appUserId.HasValue)
             {
-                var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(ci => ci.AppUserId == userId.Value);
+                var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(filter: sc => sc.AppUserId == appUserId);
+                _unitOfWork.ShoppingCart.RemoveRange(cartItems);
+
+            }
+            else if (!string.IsNullOrEmpty(cartToken))
+            {
+                var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(filter: sc => sc.CartToken == cartToken);
+                _unitOfWork.ShoppingCart.RemoveRange(cartItems);
+            }
+            await _unitOfWork.SaveAsync();
+        }
+
+
+        public async Task<int> GetCartCountAsync(long? appUserId, string? cartToken)
+        {
+            if (appUserId.HasValue)
+            {
+                var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(ci => ci.AppUserId == appUserId.Value);
                 return cartItems.Sum(ci => ci.Quantity);
             }
-            else if (!string.IsNullOrEmpty(token))
+            else if (!string.IsNullOrEmpty(cartToken))
             {
-                var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(ci => ci.CartToken == token);
+                var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(ci => ci.CartToken == cartToken);
                 return cartItems.Sum(ci => ci.Quantity);
             }
             else
@@ -140,40 +151,23 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductsService
             }
         }
 
-        public async Task<double> GetCartTotal(long? userId, string? token)
+
+        // Diese Methode bleibt unverändert, da sie spezifisch für angemeldete Benutzer ist
+        public async Task<double> GetCartTotalAsync(long? appUserId, string? cartToken)
         {
-            IEnumerable<ShoppingCart> cartItems;
-            if (userId.HasValue)
+            if (appUserId.HasValue)
             {
-                cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(ci => ci.AppUserId == userId.Value, includeProperties: "Product");
+                var cartItems = await GetAllForUserAsync(appUserId);
+                return cartItems.Sum(item => item.Quantity * item.Product!.Price);
             }
-            else if (!string.IsNullOrEmpty(token))
+            else if (!string.IsNullOrEmpty(cartToken))
             {
-                cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(ci => ci.CartToken == token, includeProperties: "Product");
+                var cartItems = await GetAllShoppingCartItemsForTokenUserAsync(cartToken);
+                return cartItems.Sum(item => item.Quantity * item.Product!.Price);
             }
             else
             {
-                throw new ArgumentException("Ein Benutzer-ID oder Token ist erforderlich, um den Gesamtbetrag des Warenkorbs zu erhalten.");
-            }
-
-            return cartItems.Sum(ci => ci.Quantity * ci.Product!.Price);
-        }
-
-        public async Task<IEnumerable<Product>> GetProductsFromShoppingList(long? userId, string? token)
-        {
-            if (userId.HasValue)
-            {
-                var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(ci => ci.AppUserId == userId.Value, includeProperties: "Product");
-                return cartItems.Select(ci => ci.Product!);
-            }
-            else if (!string.IsNullOrEmpty(token))
-            {
-                var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(ci => ci.CartToken == token, includeProperties: "Product");
-                return cartItems.Select(ci => ci.Product!);
-            }
-            else
-            {
-                throw new ArgumentException("Ein Benutzer-ID oder Token ist erforderlich, um die Produkte aus der Einkaufsliste zu erhalten.");
+                throw new ArgumentException("Ein Benutzer-ID oder Token ist erforderlich, um den Warenkorb-Menge zu erhalten.");
             }
         }
     }

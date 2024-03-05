@@ -1,37 +1,54 @@
 ﻿$(document).ready(function () {
-    var cartToken = initializeCartToken();
-    getCartItemCount(cartToken);
-    function generateUUID() {
-        var d = new Date().getTime();
-        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = (d + Math.random() * 16) % 16 | 0;
-            d = Math.floor(d / 16);
-            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-        });
-        return uuid;
-    }
+    updateCartItemCount();
 
-    function initializeCartToken() {
-        let cartToken = localStorage.getItem('cartToken');
+
+    function getCartToken() {
+        let cartToken = Cookies.get('CartToken');
         if (!cartToken) {
             cartToken = generateUUID();
-            localStorage.setItem('cartToken', cartToken);
+            Cookies.set('CartToken', cartToken);
         }
-        $('#cartToken').val(cartToken);
+        return cartToken;
+    }
+
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0,
+                v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
     }
 
 
 
+    function updateCartItemCount() {
+        const cartToken = getCartToken();
+        $.ajax({
+            url: '/api/ShoppingCart/GetCartItemCount',
+            type: 'GET',
+            data: { cartToken: cartToken },
+            contentType: 'application/json',
+            success: function (response) {
+                $('#cartItemCount').text(response.count);
+            },
+            error: function (error) {
+                console.log("Fehler beim Abrufen der Warenkorb-Anzahl", error);
+            }
+        });
+    }
 
-    function addItemToCart(productId, quantity, cartToken, callback) {
+
+    function addItemToCart(productId, quantity) {
+        const cartToken = getCartToken();
         $.ajax({
             url: '/api/ShoppingCart/AddItem',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ productId: productId, quantity: quantity, cartToken: cartToken }),
-            success: function (response) {
-                console.log("Artikel erfolgreich hinzugefügt", response);
-                if (callback) callback();
+            data: JSON.stringify({ productId, quantity, cartToken: cartToken }),
+            success: function () {
+                console.log("Artikel erfolgreich hinzugefügt");
+                toastr.success("Artikel erfolgreich hinzugefügt");
+                updateCartItemCount();
             },
             error: function (error) {
                 console.error("Fehler beim Hinzufügen des Artikels", error);
@@ -41,44 +58,50 @@
 
 
     function updateCartItemQuantity(cartItemId, newQuantity) {
+        const cartToken = getCartToken();
         $.ajax({
             url: '/api/ShoppingCart/UpdateQuantity',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ cartItemId: cartItemId, newQuantity: newQuantity }),
-            success: function (response) {
-                console.log("Artikelmenge erfolgreich aktualisiert", response);
-                // Aktualisiere die Warenkorb-Anzeige hier
+            data: JSON.stringify({ cartItemId, newQuantity, cartToken }),
+            success: function () {
+                console.log("Artikelmenge erfolgreich aktualisiert");
+                updateCartItemCount();
             },
             error: function (error) {
                 console.error("Fehler beim Aktualisieren der Artikelmenge", error);
             }
         });
     }
-    function removeCartItem(cartItemId, cartToken) {
+
+    function removeCartItem(cartItemId) {
+        const cartToken = getCartToken();
         $.ajax({
             url: '/api/ShoppingCart/RemoveItem',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ productId: cartItemId, cartToken: cartToken }),
-            success: function (response) {
-                console.log("Artikel erfolgreich entfernt", response);
-                // Aktualisiere die Warenkorb-Anzeige hier
+            data: JSON.stringify({ cartItemId, cartToken }),
+            success: function () {
+                console.log("Artikel erfolgreich entfernt");
+                updateCartItemCount();
             },
             error: function (error) {
                 console.error("Fehler beim Entfernen des Artikels", error);
             }
         });
     }
-    function clearCart(cartToken) {
+
+
+    function clearCart() {
+        const cartToken = getCartToken();
         $.ajax({
             url: '/api/ShoppingCart/ClearCart',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ cartToken: cartToken }),
-            success: function (response) {
-                console.log("Warenkorb erfolgreich geleert", response);
-                // Aktualisiere die Warenkorb-Anzeige hier
+            data: JSON.stringify({ cartToken }),
+            success: function () {
+                console.log("Warenkorb erfolgreich geleert");
+                updateCartItemCount();
             },
             error: function (error) {
                 console.error("Fehler beim Leeren des Warenkorbs", error);
@@ -87,70 +110,28 @@
     }
 
 
-
-    function updateDisplay() {
-        $.ajax({
-            url: '/api/ShoppingCart/GetCart',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(cartToken),
-            success: function (response) {
-                console.log("Warenkorb erfolgreich abgerufen", response);
-                // Aktualisiere die Warenkorb-Anzeige hier
-            },
-            error: function (error) {
-                console.error("Fehler beim Abrufen des Warenkorbs", error);
-            }
-        });
-    }
-
-    function getCartItemCount(cartToken) {
-        $.ajax({
-            url: '/api/ShoppingCart/GetCartItemCount',
-            type: 'GET',
-            data: { cartToken: cartToken },
-            success: function (response) {
-                $("#cartItemCount").text(response.count);
-            },
-            error: function (xhr) {
-                console.error("Error response:", xhr.responseJSON);
-            }
-        });
-    }
-
-
-
-
-
-    // Event-Listener für "In den Warenkorb" Buttons
+    // Event-Handler
     $(".add-to-cart").click(function (event) {
         event.preventDefault();
         var productId = $(this).data("product-id");
-        var quantity = 1; // oder die gewählte Menge
-        var cartToken = localStorage.getItem('cartToken') || initializeCartToken();
-        addItemToCart(productId, quantity, cartToken, function () {
-            getCartItemCount(cartToken);
-        });
+        var quantity = 1; // Die gewählte Menge könnte auch dynamisch sein
+        addItemToCart(productId, quantity);
     });
 
-    // Event-Listener für "Menge aktualisieren" Buttons
     $(".update-quantity").click(function () {
         var cartItemId = $(this).data("cart-item-id");
-        var newQuantity = $(this).siblings(".quantity").val();
+        var newQuantity = $(this).siblings(".quantity").val(); // Stelle sicher, dass dies die korrekte Methode ist, um die neue Menge zu erhalten
         updateCartItemQuantity(cartItemId, newQuantity);
     });
 
-    // Event-Listener für "Artikel entfernen" Buttons
     $(".remove-item").click(function () {
         var cartItemId = $(this).data("cart-item-id");
-        var cartToken = $("#cartToken").val();
-        removeCartItem(cartItemId, cartToken);
+        removeCartItem(cartItemId);
     });
 
-    // Event-Listener für "Warenkorb leeren" Button
     $(".clear-cart").click(function () {
-        var cartToken = $("#cartToken").val();
-        clearCart(cartToken);
+        clearCart();
     });
+
 
 });
