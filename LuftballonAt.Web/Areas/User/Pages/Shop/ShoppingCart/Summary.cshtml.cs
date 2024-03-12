@@ -38,6 +38,7 @@ namespace LuftballonAt.Web.Areas.User.Pages.Shop.Cart
 
             ShoppingCartItems = cartItems.Select(item => new ShoppingCartItemViewModel
             {
+                Id = item.Product!.Id,
                 ProductImageUrl = item.Product!.ImageUrl!,
                 ProductName = item.Product.Name!,
                 PricePerUnit = item.Product.Price,

@@ -5,6 +5,8 @@
     ViewData["Title"] = "Warenkorb Zusammenfassung";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
 <div class="container mt-5">
     <h2 class="mb-4">Warenkorb Zusammenfassung</h2>
     @if (Model.ShoppingCartItems.Any())
@@ -18,26 +20,47 @@
                         <th>Preis pro Einheit</th>
                         <th>Menge</th>
                         <th>Gesamtpreis</th>
+                        <th>Aktion</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.ShoppingCartItems)
                     {
                         <tr>
-                            <td>
-                                <img src="@item.ProductImageUrl" class="img-fluid" alt="Bild von @item.ProductName">
+                            <td data-label="Produktbild">
+                                <a asp-page="/Shop/Products/Details" asp-route-id="@item.Id">
+                                    <img src="@item.ProductImageUrl" class="img-fluid" alt="Bild von @item.ProductName" style="max-width: 100px;">
+                                </a>
                             </td>
-                            <td>@item.ProductName</td>
-                            <td>@item.PricePerUnit.ToString("C")</td>
-                            <td>@item.Quantity</td>
-                            <td>@item.TotalPrice.ToString("C")</td>
+                            <td data-label="Produkt"><a asp-page="/Shop/Products/Details" asp-route-id="@item.Id">@item.ProductName</a></td>
+                            <td data-label="Preis pro Einheit">@item.PricePerUnit.ToString("C")</td>
+                            <td data-label="Menge"><input type="number" class="form-control quantity" value="@item.Quantity" style="width: 80px; display: inline-block;"></td>
+                            <td data-label="Gesamtpreis">@item.TotalPrice.ToString("C")</td>
+                            <td data-label="Aktion">
+                                <div class="input-group">
+                                    <input type="number" class="form-control remove-quantity" value="1" min="1" max="@item.Quantity">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-danger remove-item" data-cart-item-id="@item.Id" title="Produkt entfernen"><i class="fas fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
+
                     }
+
                 </tbody>
             </table>
         </div>
-        <div class="text-right">
-            <h4>Total: @Model.ShoppingCartItems.Sum(item => item.TotalPrice).ToString("C")</h4>
+        <div class="col-md-12">
+            <div class="summary-actions d-flex justify-content-between align-items-center">
+                <div>
+                    <button class="btn btn-danger clear-cart">Warenkorb leeren</button>
+                </div>
+                <div class="d-flex align-items-center">
+                    <h4 class="mb-0 mr-3 p-2">Total: @Model.ShoppingCartItems.Sum(item => item.TotalPrice).ToString("C")</h4>
+                    <button class="btn btn-success">Zur Kasse</button>
+                </div>
+            </div>
         </div>
     }
     else

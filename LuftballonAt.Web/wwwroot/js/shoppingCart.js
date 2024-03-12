@@ -1,6 +1,12 @@
 ﻿$(document).ready(function () {
     updateCartItemCount();
 
+    $(document).on('input', '.quantity', function () {
+        var cartItemId = $(this).closest('tr').find('.remove-item').data("cart-item-id");
+        var newQuantity = $(this).val();
+        updateCartItemQuantity(cartItemId, newQuantity);
+    });
+
 
     function getCartToken() {
         let cartToken = Cookies.get('CartToken');
@@ -57,16 +63,17 @@
     }
 
 
-    function updateCartItemQuantity(cartItemId, newQuantity) {
+    function updateCartItemQuantity(productId, newQuantity) {
         const cartToken = getCartToken();
         $.ajax({
             url: '/api/ShoppingCart/UpdateQuantity',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ cartItemId, newQuantity, cartToken }),
+            data: JSON.stringify({ ProductId: productId, Quantity: newQuantity, CartToken: cartToken }),
             success: function () {
                 console.log("Artikelmenge erfolgreich aktualisiert");
                 updateCartItemCount();
+                location.reload();
             },
             error: function (error) {
                 console.error("Fehler beim Aktualisieren der Artikelmenge", error);
@@ -74,22 +81,26 @@
         });
     }
 
+
     function removeCartItem(cartItemId) {
         const cartToken = getCartToken();
+        const quantity = $(`button[data-cart-item-id='${cartItemId}']`).closest('.input-group').find('.remove-quantity').val();
         $.ajax({
             url: '/api/ShoppingCart/RemoveItem',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ cartItemId, cartToken }),
+            data: JSON.stringify({ ProductId: cartItemId, Quantity: quantity, CartToken: cartToken }),
             success: function () {
                 console.log("Artikel erfolgreich entfernt");
                 updateCartItemCount();
+                location.reload(); // Beachte: Das sofortige Neuladen könnte zu einer schlechten Benutzererfahrung führen, wenn es Alternativen gibt.
             },
             error: function (error) {
                 console.error("Fehler beim Entfernen des Artikels", error);
             }
         });
     }
+
 
 
     function clearCart() {
@@ -102,6 +113,7 @@
             success: function () {
                 console.log("Warenkorb erfolgreich geleert");
                 updateCartItemCount();
+                location.reload();
             },
             error: function (error) {
                 console.error("Fehler beim Leeren des Warenkorbs", error);

@@ -9,6 +9,7 @@ namespace LuftballonAt.Models.Dtos.ShoppingCartDtos
 
     public class ShoppingCartItemViewModel
     {
+        public long Id { get; set; }
         public string ProductImageUrl { get; set; } = string.Empty;
         public string ProductName { get; set; } = string.Empty;
         public double PricePerUnit { get; set; }

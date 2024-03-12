@@ -170,5 +170,11 @@ namespace LuftballonAt.Domain.Services.Implementations.ProductsService
                 throw new ArgumentException("Ein Benutzer-ID oder Token ist erforderlich, um den Warenkorb-Menge zu erhalten.");
             }
         }
+
+        public async Task<long?> FindCartItemIdByProductIdAndCartToken(long productId, string cartToken)
+        {
+            var cartItem = await _unitOfWork.ShoppingCart.GetAsync(ci => ci.ProductId == productId && ci.CartToken == cartToken);
+            return cartItem?.Id;
+        }
     }
 }

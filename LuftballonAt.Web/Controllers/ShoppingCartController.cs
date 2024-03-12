@@ -58,22 +58,35 @@ namespace LuftballonAt.Web.Controllers
             }
 
             var cartToken = Request.Cookies["CartToken"];
-            await _shoppingCartService.UpdateCartItemQuantityAsync(itemDto.ProductId.Value, itemDto.Quantity, cartToken);
+            var cartItemId = await _shoppingCartService.FindCartItemIdByProductIdAndCartToken(itemDto.ProductId.Value, cartToken!);
+
+            if (cartItemId == null)
+                return BadRequest("Item not found in cart.");
+
+
+            await _shoppingCartService.UpdateCartItemQuantityAsync(cartItemId.Value, itemDto.Quantity, cartToken!);
 
 
             return Ok();
         }
 
         [HttpPost("RemoveItem")]
-        public async Task<IActionResult> RemoveCartItem([FromBody] ShoppingCartItemDto itemDto, int amount)
+        public async Task<IActionResult> RemoveCartItem([FromBody] ShoppingCartItemDto itemDto)
         {
             if (itemDto.ProductId == null)
             {
                 return BadRequest("Invalid request.");
             }
 
+
             var cartToken = Request.Cookies["CartToken"];
-            await _shoppingCartService.RemoveFromCartAsync(itemDto.ProductId.Value, amount, cartToken);
+            var cartItemId = await _shoppingCartService.FindCartItemIdByProductIdAndCartToken(itemDto.ProductId.Value, cartToken!);
+
+            if (cartItemId == null)
+                return BadRequest("Item not found in cart.");
+
+
+            await _shoppingCartService.RemoveFromCartAsync(cartItemId.Value, itemDto.Quantity, cartToken!);
 
             return Ok(new { Message = "Item removed successfully." });
         }

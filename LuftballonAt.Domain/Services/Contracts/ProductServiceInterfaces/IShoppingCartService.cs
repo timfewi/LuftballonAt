@@ -17,5 +17,6 @@ namespace LuftballonAt.Domain.Services.Contracts.ProductServiceInterfaces
         Task ClearCartAsync(long? appUserId, string? cartToken);
         Task<int> GetCartCountAsync(long? appUserId, string? cartToken);
         Task<double> GetCartTotalAsync(long? appUserId, string? cartToken);
+        Task<long?> FindCartItemIdByProductIdAndCartToken(long productId, string cartToken);
     }
 }
