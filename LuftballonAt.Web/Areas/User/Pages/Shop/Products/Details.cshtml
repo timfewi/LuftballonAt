@@ -59,7 +59,8 @@
             <!-- Menge und Kaufen -->
             <div class="d-flex gap-2 align-items-center mb-3">
                 <input type="number" id="amount" class="form-control w-auto" value="1" min="1">
-                <button class="btn btn-primary">In den Warenkorb</button>
+                <button class="btn btn-primary add-to-cart" data-product-id="@Model.Product.Id">In den Warenkorb</button>
+
             </div>
             <!-- Dynamischer Gesamtpreis -->
             <p id="totalPrice" class="mb-3"></p>

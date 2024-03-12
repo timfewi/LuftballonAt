@@ -14,9 +14,9 @@
                             <h5 class="card-title">@product.Name</h5>
                             <p class="card-text card-price">@product.Price €</p>
                             <div class="button-container">
-                                <a href="#" class="btn btn-primary w-25 d-flex justify-content-center align-items-center">
-                                    <i class="bi bi-cart"></i>
-                                </a>
+                                <button type="button" data-product-id="@product.Id" data-quantity="1" class="btn btn-primary w-25 d-flex justify-content-center align-items-center add-to-cart">
+                                    <i class="bi bi-cart-plus-fill"></i>
+                                </button>
                                 <a asp-page="/Shop/Products/Details" asp-route-id="@product.Id" class="btn btn-outline-primary w-100 ">Anzeigen</a>
                             </div>
                         </div>

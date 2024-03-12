@@ -126,10 +126,9 @@
     $(".add-to-cart").click(function (event) {
         event.preventDefault();
         var productId = $(this).data("product-id");
-        var quantity = 1; // Die gewählte Menge könnte auch dynamisch sein
+        var quantity = parseInt($("#amount").val()) || 1;
         addItemToCart(productId, quantity);
     });
-
     $(".update-quantity").click(function () {
         var cartItemId = $(this).data("cart-item-id");
         var newQuantity = $(this).siblings(".quantity").val(); // Stelle sicher, dass dies die korrekte Methode ist, um die neue Menge zu erhalten
